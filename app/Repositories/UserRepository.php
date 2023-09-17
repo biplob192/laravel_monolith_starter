@@ -54,7 +54,7 @@ class UserRepository extends BaseController implements UserRepositoryInterface
             $users = $usersQuery->orderBy($orderBy, $order)->get();
             $allUsers = array();
             foreach ($users as $user) {
-                $usersData = [$user->name, $user->email, $user->phone];
+                $usersData = [$user->name, $user->email, $user->phone, $user->id, '', ''];
                 array_push($allUsers, $usersData);
                 $usersData = [''];
             }
@@ -102,6 +102,20 @@ class UserRepository extends BaseController implements UserRepositoryInterface
 
             Alert::success('Congrats', 'You\'ve Successfully Registered');
             return redirect()->route('auth.dashboard');
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+            return $this->sendError('Internal server error.', $error, 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            User::find($id)?->delete();
+            // Alert::success('Congrats', 'User Successfully Deleted');
+            return true;
+            // return redirect()->back();
         } catch (Exception $e) {
 
             $error = $e->getMessage();

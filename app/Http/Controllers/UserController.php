@@ -32,6 +32,11 @@ class UserController extends Controller
         return $this->userRepository->store($request);
     }
 
+    public function destroy($id)
+    {
+        return $this->userRepository->destroy($id);
+    }
+
     public function loggedInUser()
     {
         return $this->userRepository->loggedInUser();
