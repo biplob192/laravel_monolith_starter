@@ -116,7 +116,8 @@ Route::group(['middleware' => 'login'], function () {
 
         Route::get('users/list', [CropRequirementController::class, 'userList'])->name('users.list');
 
-        Route::get('varieties/crop_id/{id}', [VarietyController::class, 'certainCrop'])->name('varieties.certainCrop');
+        Route::get('varieties/crop_id/{id}', [VarietyController::class, 'certainCropVariety'])->name('varieties.certainCrop');
+        Route::get('groth_stages/crop_id/{id}', [GrothStageController::class, 'certainCropGrothStage'])->name('groth_stages.certainCrop');
     });
 });
 

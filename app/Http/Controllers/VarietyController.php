@@ -9,7 +9,7 @@ use App\Http\Controllers\BaseController;
 
 class VarietyController extends BaseController
 {
-    public function certainCrop($id)
+    public function certainCropVariety($id)
     {
         try {
             $varieties = Variety::where('crop_id', $id)->latest()->get();

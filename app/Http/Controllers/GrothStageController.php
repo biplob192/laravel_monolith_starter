@@ -155,4 +155,16 @@ class GrothStageController extends BaseController
             return $this->sendError('Internal server error.', $error, 500);
         }
     }
+
+    public function certainCropGrothStage($id)
+    {
+        try {
+            $grothStages = GrothStage::where('crop_id', $id)->latest()->get();
+            return $grothStages;
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+            return $this->sendError('Internal server error.', $error, 500);
+        }
+    }
 }

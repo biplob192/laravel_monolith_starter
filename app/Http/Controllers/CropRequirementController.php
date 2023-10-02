@@ -10,6 +10,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\CropRequirementRequest;
 use App\Models\Crop;
+use App\Models\SoilType;
 use App\Models\Variety;
 
 class CropRequirementController extends BaseController
@@ -30,7 +31,8 @@ class CropRequirementController extends BaseController
     {
         try {
             $crops = Crop::latest()->get();
-            return view('crop_requirement.create', compact('crops'));
+            $soilTypes = SoilType::latest()->get();
+            return view('crop_requirement.create', compact('crops', 'soilTypes'));
         } catch (Exception $e) {
 
             $error = $e->getMessage();

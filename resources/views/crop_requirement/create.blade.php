@@ -50,8 +50,8 @@ Requirement
                                     <select class="form-control" id="soil_type" name="soil_type" required>
                                         <option value="" selected disabled>Select Option</option>
                                         <!-- Options will be dynamically added here -->
-                                        @foreach($crops as $crop)
-                                        <option value="{{ $crop->id }}" {{ old('soil_type')==$crop->id ? 'selected' : '' }}>{{ $crop->name }}</option>
+                                        @foreach($soilTypes as $soil_type)
+                                        <option value="{{ $soil_type->id }}" {{ old('soil_type')==$soil_type->id ? 'selected' : '' }}>{{ $soil_type->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -118,8 +118,9 @@ Requirement
 @endsection
 
 @section('Script')
-
 <script>
+    var cropID = 0;
+
     document.addEventListener('DOMContentLoaded', function () {
         let sectionCounter = 1;
 
@@ -187,14 +188,19 @@ Requirement
 
             // Fetch options and populate the select element
             const selectElement = newSection.querySelector(`#groth_stage_${sectionCounter - 1}`);
-            fetchOptions(selectElement);
+            fetchOptions(selectElement, cropID);
         }
 
-        function fetchOptions(selectElement) {
+        function fetchOptions(selectElement, crop) {
             // Make an AJAX request to your API endpoint
-            fetch('{{ route("users.list") }}')
+            fetch("{{ route('groth_stages.certainCrop', '') }}/" + crop)
                 .then(response => response.json())
                 .then(data => {
+                    // Clear all options except the first one (default)
+                    while (selectElement.options.length > 1) {
+                    selectElement.removeChild(selectElement.options[1]);
+                    }
+
                     // Populate the select element with options
                     data.forEach(option => {
                         const optionElement = document.createElement('option');
@@ -202,33 +208,16 @@ Requirement
                         optionElement.textContent = option.name;
                         selectElement.appendChild(optionElement);
                     });
+
+                    // Select the very first option (default one)
+                    selectElement.selectedIndex = 0;
                 })
                 .catch(error => console.error('Error fetching options:', error));
         }
 
         // Call fetchOptions for the initial section when the page loads
-        const initialSelectElement = document.querySelector('#groth_stage_0');
-        fetchOptions(initialSelectElement);
-
-        // Fetch options for the "soil_type" select element when the page loads
-        // const soilTypeSelectElement = document.querySelector('#soil_type');
-        // fetchSoilTypeOptions(soilTypeSelectElement);
-
-        // function fetchSoilTypeOptions(selectElement) {
-        //     // Make an AJAX request to your API endpoint
-        //     fetch('{{ route("users.list") }}')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             // Populate the "soil_type" select element with options
-        //             data.forEach(option => {
-        //                 const optionElement = document.createElement('option');
-        //                 optionElement.value = option.name; // Assuming "name" is the property you want to use as the option value
-        //                 optionElement.textContent = option.name;
-        //                 selectElement.appendChild(optionElement);
-        //             });
-        //         })
-        //         .catch(error => console.error('Error fetching soil_type options:', error));
-        // }
+        // const initialSelectElement = document.querySelector('#groth_stage_0');
+        // fetchOptions(initialSelectElement, cropID);
 
         function removeSection(button) {
             const section = button.closest('.section');
@@ -245,13 +234,10 @@ Requirement
                 removeSection(event.target);
             }
         });
-    });
-</script>
 
-<script>
-    $(document).ready(function () {
         $('#crop').on('change', function () {
-            var cropID = $(this).val();
+            // var cropID = $(this).val();
+            cropID = $(this).val();
 
             // Make an AJAX request
             $.ajax({
@@ -280,7 +266,21 @@ Requirement
                     console.error(xhr.responseText);
                 }
             });
+
+            // Call fetchOptions for the initial section when the page loads
+            // const initialGrothStageSelectElement = document.querySelector('#groth_stage_0');
+            // fetchOptions(initialGrothStageSelectElement, cropID);
+
+            // Call fetchOptionsForAllSections to update all the growth stage dropdowns
+            fetchOptionsForAllSections();
         });
+
+        function fetchOptionsForAllSections() {
+            const allGrothStageSelectElements = document.querySelectorAll('[id^="groth_stage_"]');
+                allGrothStageSelectElements.forEach((selectElement, index) => {
+                fetchOptions(selectElement, cropID);
+            });
+        }
     });
 </script>
 @endsection
