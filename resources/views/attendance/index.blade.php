@@ -99,7 +99,7 @@ Attendance
 {{-- <script src="{{asset('plugins')}}/bootstrap-switch/js/bootstrap-switch.min.js"></script> --}}
 
 
-<script src="vendor/sweetalert/sweetalert.all.js"></script>
+<script src="{{asset('vendor')}}/sweetalert/sweetalert.all.js"></script>
 <script>
     $(document).ready(function() {
         var user_id = $('#user_id').val();

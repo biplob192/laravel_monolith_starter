@@ -32,21 +32,21 @@ class UserSeeder extends Seeder
         $admin->assignRole('Admin');
         $employee->assignRole('Employee');
 
-        for ($i = 0; $i < 5000; $i++) {
-            $data[] = [
-                'name'                  => fake()->name(),
-                'email'                 => fake()->unique()->safeEmail(),
-                'phone'                 => fake()->phoneNumber(),
-                'password'              => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-                'email_verified_at'     => now(),
-                'remember_token'        => Str::random(10),
-                'created_at'            => now(),
-            ];
-        }
+        // for ($i = 0; $i < 5000; $i++) {
+        //     $data[] = [
+        //         'name'                  => fake()->name(),
+        //         'email'                 => fake()->unique()->safeEmail(),
+        //         'phone'                 => fake()->phoneNumber(),
+        //         'password'              => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        //         'email_verified_at'     => now(),
+        //         'remember_token'        => Str::random(10),
+        //         'created_at'            => now(),
+        //     ];
+        // }
 
-        $chunks = array_chunk($data, 1000);
-        foreach ($chunks as $chunk) {
-            User::insert($chunk);
-        }
+        // $chunks = array_chunk($data, 1000);
+        // foreach ($chunks as $chunk) {
+        //     User::insert($chunk);
+        // }
     }
 }

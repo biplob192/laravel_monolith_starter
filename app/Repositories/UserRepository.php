@@ -88,16 +88,16 @@ class UserRepository extends BaseController implements UserRepositoryInterface
             $user->email = $request->email;
             $user->phone = $request->phone;
             $user->password = Hash::make($request->password);
-            $user->save();
-
-            if ($request->user_role) {
-                $user->assignRole($request->user_role);
-            }
 
             if ($request->file('profile_image')) {
                 // Pass folder_name and file as param
                 $path = uploadFile('users/profile_image', $request->file('profile_image'));
                 $user->profile_image = $path;
+            }
+            $user->save();
+
+            if ($request->user_role) {
+                $user->assignRole($request->user_role);
             }
 
             Alert::success('Congrats', 'You\'ve Successfully Registered');

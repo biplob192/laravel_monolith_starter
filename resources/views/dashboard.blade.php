@@ -54,7 +54,8 @@ Dashboard
 @endsection
 
 @section('Script')
-<script src="vendor/sweetalert/sweetalert.all.js"></script>
+{{-- <script src="vendor/sweetalert/sweetalert.all.js"></script> --}}
+<script src="{{asset('vendor')}}/sweetalert/sweetalert.all.js"></script>
 <script>
     $(document).ready(function() {
         var user_id = $('#user_id').val();
@@ -71,7 +72,9 @@ Dashboard
 
             $.ajax({
                 type: "GET",
-                url: "attendance/"+user_id,
+                // url: "attendance/"+user_id,
+                url: "{{ route('attendance.show', auth()->user()->id) }}",
+                // url: "{{ route('attendance.show', '') }}/" + user_id,
                 success: function(data) {
                     // console.log(data);
 
@@ -96,21 +99,23 @@ Dashboard
             $('#check_out').show();
             var user_id = $('#user_id').val();
 
-            $.ajax({
-                type: "POST",
-                url: "attendance",
-                data: {
-                user_id: user_id,
-                },
-                success: function(data) {
-                    // console.log(data);
+            attendance(user_id);
+            // $.ajax({
+            //     type: "POST",
+            //     // url: "attendance",
+            //     url: "{{ route('attendance.store') }}",
+            //     data: {
+            //         user_id: user_id,
+            //     },
+            //     success: function(data) {
+            //         // console.log(data);
 
-                    swal.fire({
-                    title: 'Attendance',
-                    text: data.message,
-                    })
-                }
-            });
+            //         swal.fire({
+            //         title: 'Attendance',
+            //         text: data.message,
+            //         })
+            //     }
+            // });
         });
     });
 
@@ -120,22 +125,24 @@ Dashboard
             $('#complete_check_in').show();
             var user_id = $('#user_id').val();
 
-            $.ajax({
-            type: "POST",
-            url: "attendance",
-            data: {
-            user_id: user_id,
-            },
-            success: function(data) {
-                console.log(data);
-
-                swal.fire({
-                title: 'Attendance',
-                text: data.message,
-                })
-            }
-            });
+            attendance(user_id);
         });
     });
+
+    function attendance(user_id) {
+        $.ajax({
+            type: "POST",
+            url: "{{ route('attendance.store') }}",
+            data: {
+                user_id: user_id,
+            },
+            success: function(data) {
+                swal.fire({
+                    title: 'Attendance',
+                    text: data.message,
+                })
+            }
+        });
+    };
 </script>
 @endsection

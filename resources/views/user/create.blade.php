@@ -51,10 +51,10 @@ New User
                                 <label for="phone">Phone</label>
                                 <input type="text" class="form-control" id="phone" placeholder="Enter phone" name="phone">
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="emergency_contact">Emergency Phone</label>
                                 <input type="text" class="form-control" id="emergency_contact" placeholder="Enter emergency_contact" name="emergency_contact">
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password" name="password">
@@ -90,6 +90,7 @@ New User
 @endsection
 
 @section('Script')
+{{-- This should include if there is a input file in the form --}}
 <script>
     $(function () {
   bsCustomFileInput.init();
