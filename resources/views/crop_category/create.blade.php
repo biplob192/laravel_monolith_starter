@@ -68,9 +68,9 @@ New User
 @section('Script')
 {{-- This should include if there is a input file in the form --}}
 <script>
-    $(function () {
-  bsCustomFileInput.init();
-});
+    $(function() {
+        bsCustomFileInput.init();
+    });
 </script>
 
 <script>
@@ -80,28 +80,29 @@ New User
         preview.innerHTML = '';
 
         if (input.files && input.files[0]) {
-        var reader = new FileReader();
+            var reader = new FileReader();
 
-        reader.onload = function(e) {
-            var img = document.createElement('img');
-            img.src = e.target.result;
-            img.alt = 'Icon Preview';
-            img.className = 'img-thumbnail';
-            img.style.maxWidth = '128px';
-            img.style.maxHeight = '128px';
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = 'Icon Preview';
+                img.className = 'img-thumbnail';
+                img.style.maxWidth = '128px';
+                img.style.maxHeight = '128px';
 
-            // Check image dimensions
-            img.onload = function() {
-                if (img.naturalWidth === 128 && img.naturalHeight === 128) {
-                    preview.appendChild(img);
-                    errorText.textContent = ''; // Clear any previous error message
-                } else {
-                    errorText.textContent = 'Image dimensions must be 128x128 pixels.';
-                }
+                // Check image dimensions
+                img.onload = function() {
+                    // if (img.naturalWidth === 128 && img.naturalHeight === 128) {
+                    if (img.naturalWidth <= 128 && img.naturalHeight <= 128) {
+                        preview.appendChild(img);
+                        errorText.textContent = ''; // Clear any previous error message
+                    } else {
+                        errorText.textContent = 'Image dimensions must be 128x128 pixels.';
+                    }
+                };
             };
-        };
 
-        reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
         } else {
             var noIconText = document.createElement('p');
             noIconText.textContent = 'No icon selected';

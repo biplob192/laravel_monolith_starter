@@ -29,7 +29,8 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name'  => 'required|unique:categories',
-            'icon'  => 'nullable|image|dimensions:width=128,height=128|mimes:jpeg,png,jpg,svg|max:2048',
+            // 'icon'  => 'nullable|image|dimensions:width=128,height=128|mimes:jpeg,png,jpg,svg|max:2048',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048|dimensions:max_width=128,max_height=128',
         ];
     }
 
@@ -37,7 +38,8 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name'  => ['required', Rule::unique('categories')->ignore($this->route('id'))],
-            'icon'  => 'nullable|image|dimensions:width=128,height=128|mimes:jpeg,png,jpg,svg|max:2048',
+            // 'icon'  => 'nullable|image|dimensions:width=128,height=128|mimes:jpeg,png,jpg,svg|max:2048',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048|dimensions:max_width=128,max_height=128',
         ];
     }
 }

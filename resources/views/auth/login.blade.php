@@ -10,6 +10,16 @@
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{asset('dist')}}/css/adminlte.min.css">
     <link rel="stylesheet" href="{{asset('plugins')}}/icheck-bootstrap/icheck-bootstrap.min.css">
+
+    <style>
+        .card-header img {
+            max-width: 100%;
+            max-height: 60px;
+            /* Adjust the height as needed */
+            margin-right: 20px;
+            /* Add some spacing between the logo and text */
+        }
+    </style>
 </head>
 
 <body class="hold-transition login-page">
@@ -17,7 +27,8 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="../../index2.html" class="h1"><b>Dashboard</b>Login</a>
+                <!-- <a href="../../index2.html" class="h1"><b>Dashboard</b>Login</a> -->
+                <img src='{{ asset("images/ndl_logo.png") }}' alt="NDL LOGO" srcset="">
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
@@ -61,9 +72,9 @@
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">
-                    <a href="{{ route('auth.login_view_new') }}" class="btn btn-block btn-primary">
+                    <!-- <a href="{{ route('auth.login_view_new') }}" class="btn btn-block btn-primary">
                         New Login Interface
-                    </a>
+                    </a> -->
                     <a href="{{ route('auth.google') }}" class="btn btn-block btn-danger">
                         <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
                     </a>
@@ -71,7 +82,7 @@
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
+                    <a href="forgot-password.html">Forgot password?</a>
                 </p>
                 <p class="mb-0">
                     <a href="{{route('auth.register')}}" class="text-center">Register a new membership</a>
