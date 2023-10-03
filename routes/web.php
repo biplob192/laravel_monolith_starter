@@ -71,6 +71,7 @@ Route::group(['middleware' => 'login'], function () {
         Route::get('crop_requirements/edit/{id}', [CropRequirementController::class, 'edit'])->name('crop_requirements.edit');
         Route::put('crop_requirements/update/{id}', [CropRequirementController::class, 'update'])->name('crop_requirements.update');
         Route::delete('crop_requirements/destroy/{id}', [CropRequirementController::class, 'destroy'])->name('crop_requirements.destroy');
+        Route::get('filter_crop_requirements', [CropRequirementController::class, 'filter'])->name('crop_requirements.filter');
 
 
         Route::get('crops/index', [CropController::class, 'index'])->name('crops.index');
@@ -81,6 +82,7 @@ Route::group(['middleware' => 'login'], function () {
         Route::put('crops/update/{id}', [CropController::class, 'update'])->name('crops.update');
         Route::delete('crops/destroy/{id}', [CropController::class, 'destroy'])->name('crops.destroy');
         Route::get('crops/get/data', [CropController::class, 'getData'])->name('crops.getData');
+        Route::get('crops/show/get/data/{id}', [CropController::class, 'detailsData'])->name('crops.detailsData');
         Route::get('crops/export/data', [CropController::class, 'export'])->name('crops.export');
 
 

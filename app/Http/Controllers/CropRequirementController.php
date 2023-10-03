@@ -151,4 +151,45 @@ class CropRequirementController extends BaseController
         $users = User::limit(10)->get();
         return $users;
     }
+
+    public function filter(Request $request)
+    {
+        try {
+            // Define the default page and perPage values
+            // $perPage        = $request->input("length", 10);
+            // $searchValue    = $request->search['value'];
+            // $start          = $request->input("start");
+            $orderBy        = 'id';
+            $order          = 'desc';
+
+
+            $usersQuery = CropRequirement::query()
+                ->where('crop_id', $request->crop_id)
+                ->where('variety_id', $request->variety_id)
+                ->where('soil_type_id', $request->soil_type_id);
+
+            $recordsFiltered = $usersQuery->count();
+
+
+            // if ($perPage != -1 && is_numeric($perPage)) {
+            //     $usersQuery->offset($start)->limit($perPage);
+            // }
+
+            $quesyDatas = $usersQuery->orderBy($orderBy, $order)->get();
+            $finalDataSet = array();
+
+            foreach ($quesyDatas as $data) {
+                $singleData = [$data->id, $data->water, $data->nitrogen, $data->potassium, $data->phosphorus];
+                array_push($finalDataSet, $singleData);
+                $singleData = [''];
+            }
+
+
+            return ['data' => $finalDataSet, 'recordsTotal' => CropRequirement::where('crop_id', $request->crop_id)->count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+            return $this->sendError('Internal server error.', $error, 500);
+        }
+    }
 }

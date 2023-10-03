@@ -15,6 +15,8 @@ use App\Http\Requests\CropRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
+use App\Models\CropRequirement;
+use App\Models\SoilType;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CropController extends BaseController
@@ -162,8 +164,57 @@ class CropController extends BaseController
     public function show($id)
     {
         try {
-            $cropRequirement = CropRequirement::find($id);
-            return view('crop_requirement.show', compact('cropRequirement'));
+            $crop = Crop::find($id);
+            $varieties = Variety::where('crop_id', $id)->latest()->get();
+            $soil_types = SoilType::latest()->get();
+            return view('crop.show', compact('crop', 'varieties', 'soil_types'));
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+            return $this->sendError('Internal server error.', $error, 500);
+        }
+    }
+
+    public function detailsData(Request $request, $id)
+    {
+        try {
+            // Define the default page and perPage values
+            $perPage        = $request->input("length", 10);
+            $searchValue    = $request->search['value'];
+            $start          = $request->input("start");
+            $orderBy        = 'id';
+            $order          = 'desc';
+
+
+            $usersQuery = CropRequirement::query()
+                ->where('crop_id', $id)
+                ->when($searchValue, function ($query, $searchValue) {
+                    $query->where(function ($query) use ($searchValue) {
+                        $query->where('water', 'like', '%' . $searchValue . '%')
+                            ->orWhere('nitrogen', 'like', '%' . $searchValue . '%')
+                            ->orWhere('potassium', 'like', '%' . $searchValue . '%')
+                            ->orWhere('phosphorus', 'like', '%' . $searchValue . '%');
+                    });
+                });
+
+            $recordsFiltered = $usersQuery->count();
+
+
+            if ($perPage != -1 && is_numeric($perPage)) {
+                $usersQuery->offset($start)->limit($perPage);
+            }
+
+            $quesyDatas = $usersQuery->orderBy($orderBy, $order)->get();
+            $finalDataSet = array();
+
+            foreach ($quesyDatas as $data) {
+                $singleData = [$data->id, $data->water, $data->nitrogen, $data->potassium, $data->phosphorus];
+                array_push($finalDataSet, $singleData);
+                $singleData = [''];
+            }
+
+
+            return ['data' => $finalDataSet, 'recordsTotal' => Crop::count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
         } catch (Exception $e) {
 
             $error = $e->getMessage();
