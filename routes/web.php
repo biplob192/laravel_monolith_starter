@@ -71,7 +71,6 @@ Route::group(['middleware' => 'login'], function () {
         Route::get('crop_requirements/edit/{id}', [CropRequirementController::class, 'edit'])->name('crop_requirements.edit');
         Route::put('crop_requirements/update/{id}', [CropRequirementController::class, 'update'])->name('crop_requirements.update');
         Route::delete('crop_requirements/destroy/{id}', [CropRequirementController::class, 'destroy'])->name('crop_requirements.destroy');
-        Route::get('filter_crop_requirements', [CropRequirementController::class, 'filter'])->name('crop_requirements.filter');
 
 
         Route::get('crops/index', [CropController::class, 'index'])->name('crops.index');
@@ -118,6 +117,7 @@ Route::group(['middleware' => 'login'], function () {
 
         Route::get('users/list', [CropRequirementController::class, 'userList'])->name('users.list');
 
+        // This Route For Create New Requirement
         Route::get('varieties/crop_id/{id}', [VarietyController::class, 'certainCropVariety'])->name('varieties.certainCrop');
         Route::get('groth_stages/crop_id/{id}', [GrothStageController::class, 'certainCropGrothStage'])->name('groth_stages.certainCrop');
     });

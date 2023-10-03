@@ -179,6 +179,9 @@ class CropController extends BaseController
     {
         try {
             // Define the default page and perPage values
+            $varietyID      = $request->variety_id;
+            $soilType_ID    = $request->soil_type_id;
+
             $perPage        = $request->input("length", 10);
             $searchValue    = $request->search['value'];
             $start          = $request->input("start");
@@ -188,6 +191,16 @@ class CropController extends BaseController
 
             $usersQuery = CropRequirement::query()
                 ->where('crop_id', $id)
+                ->when($soilType_ID, function ($query, $soilType_ID) {
+                    $query->where(function ($query) use ($soilType_ID) {
+                        $query->where('soil_type_id', $soilType_ID);
+                    });
+                })
+                ->when($varietyID, function ($query, $varietyID) {
+                    $query->where(function ($query) use ($varietyID) {
+                        $query->where('variety_id', $varietyID);
+                    });
+                })
                 ->when($searchValue, function ($query, $searchValue) {
                     $query->where(function ($query) use ($searchValue) {
                         $query->where('water', 'like', '%' . $searchValue . '%')
@@ -197,6 +210,9 @@ class CropController extends BaseController
                     });
                 });
 
+            // if ($request->variety_id) {
+            //     $usersQuery->where('variety_id', $request->variety_id);
+            // }
             $recordsFiltered = $usersQuery->count();
 
 
@@ -214,7 +230,7 @@ class CropController extends BaseController
             }
 
 
-            return ['data' => $finalDataSet, 'recordsTotal' => Crop::count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
+            return ['data' => $finalDataSet, 'recordsTotal' => CropRequirement::where('crop_id', $id)->count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
         } catch (Exception $e) {
 
             $error = $e->getMessage();
