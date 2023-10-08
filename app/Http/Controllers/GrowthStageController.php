@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\GrothStageRequest;
-use App\Models\GrothStage;
+use App\Http\Requests\GrowthStageRequest;
+use App\Models\GrowthStage;
 
-class GrothStageController extends BaseController
+class GrowthStageController extends BaseController
 {
     public function index()
     {
         try {
-            return view('groth_stage.index');
+            return view('growth_stage.index');
         } catch (Exception $e) {
 
             $error = $e->getMessage();
@@ -32,7 +32,7 @@ class GrothStageController extends BaseController
             $order          = 'desc';
 
 
-            $usersQuery = GrothStage::query()
+            $usersQuery = GrowthStage::query()
                 ->when($searchValue, function ($query, $searchValue) {
                     $query->where(function ($query) use ($searchValue) {
                         $query->where('name', 'like', '%' . $searchValue . '%');
@@ -56,7 +56,7 @@ class GrothStageController extends BaseController
             }
 
 
-            return ['data' => $finalDataSet, 'recordsTotal' => GrothStage::count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
+            return ['data' => $finalDataSet, 'recordsTotal' => GrowthStage::count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
         } catch (Exception $e) {
 
             $error = $e->getMessage();
@@ -67,7 +67,7 @@ class GrothStageController extends BaseController
     public function create()
     {
         try {
-            return view('groth_stage.create');
+            return view('growth_stage.create');
         } catch (Exception $e) {
 
             $error = $e->getMessage();
@@ -75,11 +75,11 @@ class GrothStageController extends BaseController
         }
     }
 
-    public function store(GrothStageRequest $request)
+    public function store(GrowthStageRequest $request)
     {
         dd($request->all());
         try {
-            $season = new GrothStage();
+            $season = new GrowthStage();
             $season->name = $request->name;
             $season->save();
 
@@ -156,11 +156,11 @@ class GrothStageController extends BaseController
         }
     }
 
-    public function certainCropGrothStage($id)
+    public function certainCropGrowthStage($id)
     {
         try {
-            $grothStages = GrothStage::where('crop_id', $id)->latest()->get();
-            return $grothStages;
+            $growthStages = GrowthStage::where('crop_id', $id)->latest()->get();
+            return $growthStages;
         } catch (Exception $e) {
 
             $error = $e->getMessage();

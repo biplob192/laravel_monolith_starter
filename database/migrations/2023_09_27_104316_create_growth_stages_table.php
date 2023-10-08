@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groth_stages', function (Blueprint $table) {
+        Schema::create('growth_stages', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
             $table->unsignedBigInteger('crop_id');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groth_stages');
+        Schema::dropIfExists('growth_stages');
     }
 };

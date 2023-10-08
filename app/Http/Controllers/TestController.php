@@ -14,7 +14,7 @@ class TestController extends Controller
         $crops = User::limit(10)->get(); // Assuming you have a GrowthStage model.
 
         // Pass the growth stages data to your view.
-        return view('groth_stage.create', compact('crops'));
+        return view('growth_stage.create', compact('crops'));
         return view('your.blade.view', compact('growthStages'));
     }
 
@@ -45,7 +45,7 @@ class TestController extends Controller
             // Create a new section record and associate it with the user
             $section = new Section;
             $section->user_id = $user->id; // Assuming a user_id foreign key
-            $section->groth_stage = $sectionData['groth_stage'];
+            $section->growth_stage = $sectionData['growth_stage'];
             $section->water = $sectionData['water'];
             $section->nitrogen = $sectionData['nitrogen'];
             $section->potassium = $sectionData['potassium'];

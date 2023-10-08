@@ -152,7 +152,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="users" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -178,7 +178,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 @endrole
             </ul>
         </nav>

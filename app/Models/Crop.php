@@ -20,9 +20,9 @@ class Crop extends Model
         return $this->hasMany(CropSeason::class);
     }
 
-    public function groth_stage()
+    public function growth_stage()
     {
-        return $this->hasMany(GrothStage::class);
+        return $this->hasMany(GrowthStage::class);
     }
 
     public function variety()

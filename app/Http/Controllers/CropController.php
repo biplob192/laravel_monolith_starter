@@ -9,7 +9,7 @@ use App\Models\Season;
 use App\Models\Variety;
 use App\Models\Category;
 use App\Models\CropSeason;
-use App\Models\GrothStage;
+use App\Models\GrowthStage;
 use Illuminate\Http\Request;
 use App\Http\Requests\CropRequest;
 use Illuminate\Support\Facades\DB;
@@ -123,10 +123,10 @@ class CropController extends BaseController
             }
 
             foreach ($request->sections as $sectionData) {
-                GrothStage::updateOrCreate(
+                GrowthStage::updateOrCreate(
                     [
                         'crop_id'   => $crop->id,
-                        'name'      => $sectionData['groth_stage']
+                        'name'      => $sectionData['growth_stage']
                     ],
                     [
                         'status'      => 1
@@ -190,6 +190,7 @@ class CropController extends BaseController
 
 
             $usersQuery = CropRequirement::query()
+                ->with(['growthStage'])
                 ->where('crop_id', $id)
                 ->when($soilType_ID, function ($query, $soilType_ID) {
                     $query->where(function ($query) use ($soilType_ID) {
@@ -207,6 +208,9 @@ class CropController extends BaseController
                             ->orWhere('nitrogen', 'like', '%' . $searchValue . '%')
                             ->orWhere('potassium', 'like', '%' . $searchValue . '%')
                             ->orWhere('phosphorus', 'like', '%' . $searchValue . '%');
+                        // ->orWhereHas('growthStage', function ($subQuery) use ($searchValue) {
+                        //     $subQuery->where('name', 'like', '%' . $searchValue . '%');
+                        // });
                     });
                 });
 
@@ -224,12 +228,13 @@ class CropController extends BaseController
             $finalDataSet = array();
 
             foreach ($quesyDatas as $data) {
-                $singleData = [$data->id, $data->water, $data->nitrogen, $data->potassium, $data->phosphorus];
+                $singleData = [$data->id, $data->growthStage->name, $data->water, $data->nitrogen, $data->potassium, $data->phosphorus];
                 array_push($finalDataSet, $singleData);
                 $singleData = [''];
             }
 
 
+            // dd($finalDataSet);
             return ['data' => $finalDataSet, 'recordsTotal' => CropRequirement::where('crop_id', $id)->count(), 'recordsFiltered' => $recordsFiltered, 'status' => 200];
         } catch (Exception $e) {
 
@@ -241,16 +246,16 @@ class CropController extends BaseController
     public function edit($id)
     {
         try {
-            if (!$crop = Crop::with(['category', 'crop_season', 'groth_stage', 'variety'])->find($id)) {
+            if (!$crop = Crop::with(['category', 'crop_season', 'growth_stage', 'variety'])->find($id)) {
                 throw new Exception("No record found.", 404);
             }
 
             $categories = Category::latest()->get();
             $seasons = Season::latest()->get();
-            $grothStageCount = GrothStage::where('crop_id', $id)->count();
+            $growthStageCount = GrowthStage::where('crop_id', $id)->count();
             $varietyCount = Variety::where('crop_id', $id)->count();
 
-            return view('crop.edit', compact('crop', 'categories', 'seasons', 'grothStageCount', 'varietyCount'));
+            return view('crop.edit', compact('crop', 'categories', 'seasons', 'growthStageCount', 'varietyCount'));
         } catch (Exception $e) {
 
             $error = $e->getMessage();
@@ -301,12 +306,12 @@ class CropController extends BaseController
                 );
             }
 
-            GrothStage::where('crop_id', $id)->delete();
+            GrowthStage::where('crop_id', $id)->delete();
             foreach ($request->sections as $sectionData) {
-                GrothStage::updateOrCreate(
+                GrowthStage::updateOrCreate(
                     [
                         'crop_id'   => $crop->id,
-                        'name'      => $sectionData['groth_stage']
+                        'name'      => $sectionData['growth_stage']
                     ],
                     [
                         'status'      => 1

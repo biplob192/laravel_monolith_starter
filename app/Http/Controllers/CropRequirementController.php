@@ -50,7 +50,7 @@ class CropRequirementController extends BaseController
                         'crop_id'           => $request->crop,
                         'variety_id'        => $request->variety_id,
                         'soil_type_id'      => $request->soil_type,
-                        'groth_stage_id'    => $sectionData['groth_stage'],
+                        'growth_stage_id'    => $sectionData['growth_stage'],
                     ],
                     [
                         'water'             => $sectionData['water'],
@@ -100,7 +100,7 @@ class CropRequirementController extends BaseController
             // $cropRequirement = CropRequirement::find($id);
             // $cropRequirement->crop_id           = $request->crop;
             // $cropRequirement->soil_type_id      = $request->soil_type;
-            // $cropRequirement->groth_stage_id    = $request->groth_stage;
+            // $cropRequirement->growth_stage_id    = $request->growth_stage;
             // $cropRequirement->water             = $request->water;
             // $cropRequirement->nitrogen          = $request->nitrogen;
             // $cropRequirement->potassium         = $request->potassium;
@@ -113,7 +113,7 @@ class CropRequirementController extends BaseController
                 [
                     'crop_id'           => $request->crop,
                     'soil_type_id'      => $request->soil_type,
-                    'groth_stage_id'      => $request->groth_stage,
+                    'growth_stage_id'      => $request->growth_stage,
                 ],
                 [
                     'water'             => $request->water,

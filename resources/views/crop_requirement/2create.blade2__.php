@@ -55,13 +55,13 @@ Requirement
                             <!-- Initial section -->
                             <div class="section card card-secondary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Groth Stage</h3>
+                                    <h3 class="card-title">Growth Stage</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-6">
-                                            <label for="groth_stage_0">Select Growth Stage</label>
-                                            <select class="form-control" name="sections[0][groth_stage]" id="groth_stage_0" required>
+                                            <label for="growth_stage_0">Select Growth Stage</label>
+                                            <select class="form-control" name="sections[0][growth_stage]" id="growth_stage_0" required>
                                                 <option value="" selected disabled>Select Option</option>
                                                 <!-- Options will be dynamically added here -->
                                             </select>
@@ -75,16 +75,13 @@ Requirement
                                         <label for="fertilizer">Fertilizer</label>
                                         <div class="row">
                                             <div class="col-4">
-                                                <input type="number" step="0.01" class="form-control" name="sections[0][nitrogen]" placeholder="Nitrogen" value="{{ old('sections.0.nitrogen') }}"
-                                                    required>
+                                                <input type="number" step="0.01" class="form-control" name="sections[0][nitrogen]" placeholder="Nitrogen" value="{{ old('sections.0.nitrogen') }}" required>
                                             </div>
                                             <div class="col-4">
-                                                <input type="number" step="0.01" class="form-control" name="sections[0][potassium]" placeholder="Potassium" value="{{ old('sections.0.potassium') }}"
-                                                    required>
+                                                <input type="number" step="0.01" class="form-control" name="sections[0][potassium]" placeholder="Potassium" value="{{ old('sections.0.potassium') }}" required>
                                             </div>
                                             <div class="col-4">
-                                                <input type="number" step="0.01" class="form-control" name="sections[0][phosphorus]" placeholder="Phosphorus" value="{{ old('sections.0.phosphorus') }}"
-                                                    required>
+                                                <input type="number" step="0.01" class="form-control" name="sections[0][phosphorus]" placeholder="Phosphorus" value="{{ old('sections.0.phosphorus') }}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +110,7 @@ Requirement
 @section('Script')
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         let sectionCounter = 1;
 
         function enableRemoveButtons() {
@@ -143,8 +140,8 @@ Requirement
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-6">
-                            <label for="groth_stage_${sectionCounter}">Select Growth Stage</label>
-                            <select class="form-control" name="sections[${sectionCounter}][groth_stage]" id="groth_stage_${sectionCounter}" required>
+                            <label for="growth_stage_${sectionCounter}">Select Growth Stage</label>
+                            <select class="form-control" name="sections[${sectionCounter}][growth_stage]" id="growth_stage_${sectionCounter}" required>
                                 <option value="" selected disabled>Select Option</option>
                                 <!-- Options will be dynamically added here -->
                             </select>
@@ -179,7 +176,7 @@ Requirement
             sectionCounter++;
 
             // Fetch options and populate the select element
-            const selectElement = newSection.querySelector(`#groth_stage_${sectionCounter - 1}`);
+            const selectElement = newSection.querySelector(`#growth_stage_${sectionCounter - 1}`);
             fetchOptions(selectElement);
         }
 
@@ -200,7 +197,7 @@ Requirement
         }
 
         // Call fetchOptions for the initial section when the page loads
-        const initialSelectElement = document.querySelector('#groth_stage_0');
+        const initialSelectElement = document.querySelector('#growth_stage_0');
         fetchOptions(initialSelectElement);
 
         // Fetch options for the "soil_type" select element when the page loads
@@ -229,11 +226,11 @@ Requirement
             disableRemoveButtons();
         }
 
-        document.querySelector('.add-new').addEventListener('click', function () {
+        document.querySelector('.add-new').addEventListener('click', function() {
             createNewSection();
         });
 
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', function(event) {
             if (event.target && event.target.getAttribute('data-action') === 'remove') {
                 removeSection(event.target);
             }

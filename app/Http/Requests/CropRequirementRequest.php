@@ -30,7 +30,7 @@ class CropRequirementRequest extends FormRequest
         return [
             'crop'                      => 'required|integer',
             'soil_type'                 => 'required|integer',
-            'sections.*.groth_stage'    => 'required|integer',
+            'sections.*.growth_stage'    => 'required|integer',
             'sections.*.water'          => 'required',
             'sections.*.nitrogen'       => 'required',
             'sections.*.potassium'      => 'required',
@@ -43,19 +43,19 @@ class CropRequirementRequest extends FormRequest
         // Extract values from the input data
         $cropId = $this->input('crop_id');
         $soilTypeId = $this->input('soil_type_id');
-        $grothStageId = $this->input('groth_stage_id');
+        $growthStageId = $this->input('growth_stage_id');
 
         return [
             'crop_id' => 'required',
             'soil_type_id' => 'required',
-            'groth_stage_id' => [
+            'growth_stage_id' => [
                 'required',
                 Rule::unique('crop_requirements')
                     ->ignore($this->route('id'))
-                    ->where(function ($query) use ($cropId, $soilTypeId, $grothStageId) {
+                    ->where(function ($query) use ($cropId, $soilTypeId, $growthStageId) {
                         return $query->where('crop_id', $cropId)
                             ->where('soil_type_id', $soilTypeId)
-                            ->where('groth_stage_id', $grothStageId);
+                            ->where('growth_stage_id', $growthStageId);
                     }),
             ],
             'water' => 'required',

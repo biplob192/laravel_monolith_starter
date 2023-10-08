@@ -10,7 +10,7 @@ use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\VarietyController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\GrothStageController;
+use App\Http\Controllers\GrowthStageController;
 use App\Http\Controllers\CropRequirementController;
 
 Route::get('register', [AuthController::class, 'registerView'])->name('auth.register_view');
@@ -96,15 +96,15 @@ Route::group(['middleware' => 'login'], function () {
         Route::get('seasons/export/data', [SeasonController::class, 'export'])->name('seasons.export');
 
 
-        Route::get('groth_stages/index', [GrothStageController::class, 'index'])->name('groth_stages.index');
-        Route::get('groth_stages/create', [GrothStageController::class, 'create'])->name('groth_stages.create');
-        Route::post('groth_stages/store', [GrothStageController::class, 'store'])->name('groth_stages.store');
-        Route::get('groth_stages/show/{id}', [GrothStageController::class, 'show'])->name('groth_stages.show');
-        Route::get('groth_stages/edit/{id}', [GrothStageController::class, 'edit'])->name('groth_stages.edit');
-        Route::put('groth_stages/update/{id}', [GrothStageController::class, 'update'])->name('groth_stages.update');
-        Route::delete('groth_stages/destroy/{id}', [GrothStageController::class, 'destroy'])->name('groth_stages.destroy');
-        Route::get('groth_stages/get/data', [GrothStageController::class, 'getData'])->name('groth_stages.getData');
-        Route::get('groth_stages/export/data', [GrothStageController::class, 'export'])->name('groth_stages.export');
+        Route::get('growth_stages/index', [GrowthStageController::class, 'index'])->name('growth_stages.index');
+        Route::get('growth_stages/create', [GrowthStageController::class, 'create'])->name('growth_stages.create');
+        Route::post('growth_stages/store', [GrowthStageController::class, 'store'])->name('growth_stages.store');
+        Route::get('growth_stages/show/{id}', [GrowthStageController::class, 'show'])->name('growth_stages.show');
+        Route::get('growth_stages/edit/{id}', [GrowthStageController::class, 'edit'])->name('growth_stages.edit');
+        Route::put('growth_stages/update/{id}', [GrowthStageController::class, 'update'])->name('growth_stages.update');
+        Route::delete('growth_stages/destroy/{id}', [GrowthStageController::class, 'destroy'])->name('growth_stages.destroy');
+        Route::get('growth_stages/get/data', [GrowthStageController::class, 'getData'])->name('growth_stages.getData');
+        Route::get('growth_stages/export/data', [GrowthStageController::class, 'export'])->name('growth_stages.export');
 
 
         Route::get('auth/user', [UserController::class, 'loggedInUser'])->name('users.details');
@@ -119,7 +119,7 @@ Route::group(['middleware' => 'login'], function () {
 
         // This Route For Create New Requirement
         Route::get('varieties/crop_id/{id}', [VarietyController::class, 'certainCropVariety'])->name('varieties.certainCrop');
-        Route::get('groth_stages/crop_id/{id}', [GrothStageController::class, 'certainCropGrothStage'])->name('groth_stages.certainCrop');
+        Route::get('growth_stages/crop_id/{id}', [GrowthStageController::class, 'certainCropGrowthStage'])->name('growth_stages.certainCrop');
     });
 });
 

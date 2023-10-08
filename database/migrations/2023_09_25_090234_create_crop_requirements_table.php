@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('crop_id');
             $table->unsignedBigInteger('variety_id');
             $table->unsignedBigInteger('soil_type_id');
-            $table->unsignedBigInteger('groth_stage_id');
+            $table->unsignedBigInteger('growth_stage_id');
             $table->double('water', 8, 2);
             $table->double('nitrogen', 8, 2);
             $table->double('potassium', 8, 2);
