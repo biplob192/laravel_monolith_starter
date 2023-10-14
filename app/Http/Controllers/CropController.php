@@ -8,15 +8,16 @@ use App\Models\User;
 use App\Models\Season;
 use App\Models\Variety;
 use App\Models\Category;
+use App\Models\SoilType;
 use App\Models\CropSeason;
 use App\Models\GrowthStage;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\CropRequirement;
 use App\Http\Requests\CropRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
-use App\Models\CropRequirement;
-use App\Models\SoilType;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CropController extends BaseController
@@ -225,6 +226,7 @@ class CropController extends BaseController
             }
 
             $quesyDatas = $usersQuery->orderBy($orderBy, $order)->get();
+            // dd($quesyDatas);
             $finalDataSet = array();
 
             foreach ($quesyDatas as $data) {
@@ -265,7 +267,18 @@ class CropController extends BaseController
 
     public function update(CropRequest $request, $id)
     {
+        // dd($exGrowthStageIds);
+
         // dd($request->all());
+
+        // $exGrowthStageIds = GrowthStage::where('crop_id', $id)->pluck('id');
+        // $growthStageIds = [];
+        // foreach ($request->sections as $section) {
+        //     if (isset($section['growth_stage_id'])) {
+        //         $growthStageIds[] = $section['growth_stage_id'];
+        //     }
+        // }
+        // dd($growthStageIds);
 
         try {
             if (!$crop = Crop::find($id)) {
@@ -306,18 +319,57 @@ class CropController extends BaseController
                 );
             }
 
-            GrowthStage::where('crop_id', $id)->delete();
-            foreach ($request->sections as $sectionData) {
-                GrowthStage::updateOrCreate(
-                    [
-                        'crop_id'   => $crop->id,
-                        'name'      => $sectionData['growth_stage']
-                    ],
-                    [
-                        'status'      => 1
-                    ]
-                );
+            // Previous code
+            // GrowthStage::where('crop_id', $id)->delete();
+            // foreach ($request->sections as $sectionData) {
+            //     GrowthStage::updateOrCreate(
+            //         [
+            //             'crop_id'   => $crop->id,
+            //             'name'      => $sectionData['growth_stage']
+            //         ],
+            //         [
+            //             'status'      => 1
+            //         ]
+            //     );
+            // }
+
+            // New code
+            // Initialize an array to store the IDs of "GrowthStage" records to be deleted
+            $exGrowthStageIds = GrowthStage::where('crop_id', $id)->pluck('id')->toArray();
+            $growthStageIds = [];
+
+            // Loop through the "sections" array and extract "growth_stage_id"
+            dd($request->sections);
+            foreach ($request->sections as $section) {
+                if (isset($section['growth_stage_id'])) {
+                    $growthStageId = $section['growth_stage_id'];
+                    $growthStageIds[] = $growthStageId;
+
+                    $growthStage = GrowthStage::find($growthStageId);
+                    $growthStage->name = $section['growth_stage'];
+                    $growthStage->crop_id = $crop->id;
+
+                    $growthStage->save();
+                } else {
+                    // dd($section, $crop->id);
+                    // var_dump($section);
+
+                    GrowthStage::updateOrCreate(
+                        [
+                            'name'      => $section['growth_stage'],
+                            'crop_id'   => $crop->id,
+                        ],
+                        [
+                            'status'      => 1
+                        ]
+                    );
+                }
             }
+
+            $idsToDelete = array_diff($exGrowthStageIds, $growthStageIds);
+
+            // Delete the "GrowthStage" records with IDs found in $idsToDelete
+            GrowthStage::whereIn('id', $idsToDelete)->delete();
 
             Variety::where('crop_id', $id)->delete();
             foreach ($request->varieties as $variety) {

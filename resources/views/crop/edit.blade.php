@@ -132,6 +132,7 @@
                                                     <div class="form-group">
                                                         <label for="growth_stage_{{ $index }}">Growth Stage</label>
                                                         <input type="text" class="form-control" name="sections[{{ $index }}][growth_stage]" placeholder="Growth stage name" value="{{ $growthStage['name'] }}" required>
+                                                        <input type="hidden" class="form-control" name="sections[{{ $index }}][growth_stage_id]" placeholder="Growth stage name id" value="{{ $growthStage['id'] }}" required>
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
