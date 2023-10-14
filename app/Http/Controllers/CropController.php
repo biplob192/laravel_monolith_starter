@@ -339,7 +339,6 @@ class CropController extends BaseController
             $growthStageIds = [];
 
             // Loop through the "sections" array and extract "growth_stage_id"
-            dd($request->sections);
             foreach ($request->sections as $section) {
                 if (isset($section['growth_stage_id'])) {
                     $growthStageId = $section['growth_stage_id'];
@@ -351,9 +350,6 @@ class CropController extends BaseController
 
                     $growthStage->save();
                 } else {
-                    // dd($section, $crop->id);
-                    // var_dump($section);
-
                     GrowthStage::updateOrCreate(
                         [
                             'name'      => $section['growth_stage'],
