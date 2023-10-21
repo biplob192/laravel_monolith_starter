@@ -303,7 +303,7 @@
                 const section = button.closest('.section');
                 section.remove();
                 disableRemoveButtons2();
-                sectionCounter2--;
+                // sectionCounter2--;
             }
 
             document.querySelector('.add-new').addEventListener('click', function() {
