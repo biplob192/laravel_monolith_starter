@@ -269,7 +269,7 @@ class CropController extends BaseController
     {
         // dd($exGrowthStageIds);
 
-        // dd($request->all());
+        dd($request->all());
 
         // $exGrowthStageIds = GrowthStage::where('crop_id', $id)->pluck('id');
         // $growthStageIds = [];

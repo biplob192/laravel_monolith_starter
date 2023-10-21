@@ -126,13 +126,13 @@
                                         @foreach ($crop['growth_stage'] as $index => $growthStage)
                                             <div class="section card card-secondary">
                                                 <div class="card-header">
-                                                    <h3 class="card-title">Growth Stage -- {{$index }}</h3>
+                                                    <h3 class="card-title">Growth Stage -- {{ $index }}</h3>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="form-group">
                                                         <label for="growth_stage_{{ $index }}">Growth Stage</label>
                                                         <input type="text" class="form-control" name="sections[{{ $index }}][growth_stage]" placeholder="Growth stage name" value="{{ $growthStage['name'] }}" required>
-                                                        <input type="hidden" class="form-control" name="sections[{{ $index }}][growth_stage_id]" placeholder="Growth stage name id" value="{{ $growthStage['id'] }}" required>
+                                                        <input type="hidden" class="form-control" name="sections[{{ $index }}][growth_stage_id]" value="{{ $growthStage['id'] }}">
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
@@ -155,6 +155,7 @@
                                                     <div class="form-group">
                                                         <label for="varieties_{{ $index }}">Crop Variety</label>
                                                         <input type="text" class="form-control" name="varieties[{{ $index }}][variety]" placeholder="Crop variety name" value="{{ $variety['name'] }}" required>
+                                                        <input type="hidden" class="form-control" name="varieties[{{ $index }}][variety_id]" value="{{ $variety['id'] }}">
                                                     </div>
                                                 </div>
                                                 <div class="card-footer">
