@@ -267,18 +267,7 @@ class CropController extends BaseController
 
     public function update(CropRequest $request, $id)
     {
-        // dd($exGrowthStageIds);
-
-        dd($request->all());
-
-        // $exGrowthStageIds = GrowthStage::where('crop_id', $id)->pluck('id');
-        // $growthStageIds = [];
-        // foreach ($request->sections as $section) {
-        //     if (isset($section['growth_stage_id'])) {
-        //         $growthStageIds[] = $section['growth_stage_id'];
-        //     }
-        // }
-        // dd($growthStageIds);
+        // dd($request->all());
 
         try {
             if (!$crop = Crop::find($id)) {
@@ -367,18 +356,59 @@ class CropController extends BaseController
             // Delete the "GrowthStage" records with IDs found in $idsToDelete
             GrowthStage::whereIn('id', $idsToDelete)->delete();
 
-            Variety::where('crop_id', $id)->delete();
-            foreach ($request->varieties as $variety) {
-                Variety::updateOrCreate(
-                    [
-                        'crop_id'   => $crop->id,
-                        'name'      => $variety['variety']
-                    ],
-                    [
-                        'status'    => 1
-                    ]
-                );
+            // Delete related crop_requirments for the GrowthStage
+            CropRequirement::whereIn('growth_stage_id', $idsToDelete)->delete();
+
+            // Previous code
+            // Variety::where('crop_id', $id)->delete();
+            // foreach ($request->varieties as $variety) {
+            //     Variety::updateOrCreate(
+            //         [
+            //             'crop_id'   => $crop->id,
+            //             'name'      => $variety['variety']
+            //         ],
+            //         [
+            //             'status'    => 1
+            //         ]
+            //     );
+            // }
+
+            // New code
+            // Initialize an array to store the IDs of "Variety" records to be deleted
+            $exVarietyIds = Variety::where('crop_id', $id)->pluck('id')->toArray();
+            $varietyIds = [];
+
+            // Loop through the "varieties" array and extract "variety_id"
+            foreach ($request->varieties as $request_variety) {
+                if (isset($request_variety['variety_id'])) {
+                    $varietyId = $request_variety['variety_id'];
+                    $varietyIds[] = $varietyId;
+
+                    $variety = Variety::find($varietyId);
+                    $variety->name = $request_variety['variety'];
+                    $variety->crop_id = $crop->id;
+
+                    $variety->save();
+                } else {
+                    Variety::updateOrCreate(
+                        [
+                            'name'      => $request_variety['variety'],
+                            'crop_id'   => $crop->id,
+                        ],
+                        [
+                            'status'      => 1
+                        ]
+                    );
+                }
             }
+
+            $varietyIDsToDelete = array_diff($exVarietyIds, $varietyIds);
+
+            // Delete the "Variety" records with IDs found in $varietyIDsToDelete
+            Variety::whereIn('id', $varietyIDsToDelete)->delete();
+
+            // Delete related crop_requirments for the verieties
+            CropRequirement::whereIn('variety_id', $varietyIDsToDelete)->delete();
 
             // If everything is successful, commit the transaction
             DB::commit();
