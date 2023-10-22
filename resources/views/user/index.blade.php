@@ -38,20 +38,20 @@ Users
                             <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>ID</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>ID</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -172,23 +172,23 @@ Users
             serverSide: true,
             columnDefs: [
                 {
-                    targets: 0,
+                    targets: 1,
                     render: function (data, type, row) {
-                        return '<a href="/show/' + row[3] + '">' + data + '</a>';
+                        return '<a href="/show/' + row[0] + '">' + data + '</a>';
                     },
                     orderable: true,
                 },
                 {
                     targets: -2, // Edit button
                     render: function (data, type, row) {
-                        return '<a href="#" class="btn btn-primary edit-button" data-id="' + row[3] + '">Edit</a>';
+                        return '<a href="{{ route('users.edit', '') }}/' + row[0] + '" class="btn btn-primary edit-button" data-id="' + row[0] + '">Edit</a>';
                     },
                     orderable: false,
                 },
                 {
                     targets: -1, // Delete button
                     render: function (data, type, row) {
-                        return '<a href="#" class="btn btn-danger delete-button" data-id="' + row[3] + '">Delete</a>';
+                        return '<a href="#" class="btn btn-danger delete-button" data-id="' + row[0] + '">Delete</a>';
                     },
                     orderable: false,
                 },

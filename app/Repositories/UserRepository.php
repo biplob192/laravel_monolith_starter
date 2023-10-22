@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Exports\UsersExport;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Interfaces\UserRepositoryInterface;
@@ -54,7 +55,8 @@ class UserRepository extends BaseController implements UserRepositoryInterface
             $users = $usersQuery->orderBy($orderBy, $order)->get();
             $allUsers = array();
             foreach ($users as $user) {
-                $usersData = [$user->name, $user->email, $user->phone, $user->id, '', ''];
+                // $usersData = [$user->name, $user->email, $user->phone, $user->id, '', ''];
+                $usersData = [$user->id, $user->name, $user->email, $user->phone, '', ''];
                 array_push($allUsers, $usersData);
                 $usersData = [''];
             }
@@ -101,7 +103,64 @@ class UserRepository extends BaseController implements UserRepositoryInterface
             }
 
             Alert::success('Congrats', 'You\'ve Successfully Registered');
-            return redirect()->route('auth.dashboard');
+            return redirect()->route('users.index');
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+            return $this->sendError('Internal server error.', $error, 500);
+        }
+    }
+
+    public function edit($id)
+    {
+        try {
+            $user = User::with('roles')->findOrFail($id);
+            return view('user.edit', compact('user'));
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+            return $this->sendError('Internal server error.', $error, 500);
+        }
+    }
+
+    public function update($request, $id)
+    {
+        // dd($request->all());
+        try {
+            $user = User::findOrFail($id);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+            if ($request->hasFile('profile_image')) {
+                // Check if the category has a previous icon and unlink it
+                if ($user->profile_image) {
+                    Storage::disk('public')->delete($user->profile_image);
+                }
+
+                // Upload the new icon
+                $path = uploadFile('users/profile_image', $request->file('profile_image'));
+
+                // Update the category with the new icon path
+                $user->profile_image = $path;
+            }
+
+            if ($request->user_role) {
+                // Remove the previous role
+                $user->removeRole($user->getRoleNames()->first());
+
+                // Assign a new role
+                $user->assignRole($request->user_role);
+            }
+
+            $user->save();
+
+            Alert::success('Congrats', 'User updated successfully');
+            return redirect()->route('users.index');
         } catch (Exception $e) {
 
             $error = $e->getMessage();

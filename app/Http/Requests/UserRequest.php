@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
             'email'         => 'required|email|unique:users,email',
             'phone'         => 'required|unique:users,phone',
             'password'      => 'required|confirmed',
-            'user_role'     => 'required',
+            'user_role'     => 'required|not_in:super_admin',
             // 'profile_image'         => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
         ];
     }
@@ -42,9 +42,11 @@ class UserRequest extends FormRequest
     protected function update()
     {
         return [
-            'name' => 'required',
-            'phone' => ['required', Rule::unique('users')->ignore($this->route('id'))],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($this->route('id'))],
+            'name'      => 'required',
+            'phone'     => ['required', Rule::unique('users')->ignore($this->route('id'))],
+            'email'     => ['required', 'email', Rule::unique('users')->ignore($this->route('id'))],
+            'user_role' => 'required|not_in:super_admin',
+            'password'  => 'confirmed',
         ];
     }
 }

@@ -15,10 +15,17 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        $super_admin = User::create([
+            'name' => 'Super Admin',
+            'email' => 'sadmin@gmail.com',
+            'phone' => '01725361208',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        ]);
+
         $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'phone' => '01725361208',
+            'phone' => '01725361209',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ]);
 
@@ -29,6 +36,7 @@ class UserSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         ]);
 
+        $super_admin->assignRole('Super_Admin');
         $admin->assignRole('Admin');
         $employee->assignRole('Employee');
 

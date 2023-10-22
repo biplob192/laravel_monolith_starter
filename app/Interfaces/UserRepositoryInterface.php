@@ -9,6 +9,8 @@ interface UserRepositoryInterface
     public function getData($request);
     public function create();
     public function store($request);
+    public function edit($id);
+    public function update($request, $id);
     public function destroy($id);
     public function loggedInUser();
     public function export();

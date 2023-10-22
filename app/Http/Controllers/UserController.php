@@ -32,6 +32,16 @@ class UserController extends Controller
         return $this->userRepository->store($request);
     }
 
+    public function edit($id)
+    {
+        return $this->userRepository->edit($id);
+    }
+
+    public function update(UserRequest $request, $id)
+    {
+        return $this->userRepository->update($request, $id);
+    }
+
     public function destroy($id)
     {
         return $this->userRepository->destroy($id);
