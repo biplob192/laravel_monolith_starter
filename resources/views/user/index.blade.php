@@ -30,7 +30,13 @@ Users
                             </button>
                         </div>
                         <div class="float-sm-right ml-1">
-                            <button type="button" class="btn btn-block btn-default">Sample</button>
+                            <button type="button" class="btn btn-block btn-default">
+                                <a href="{{route('users.create')}}">
+                                    <p style="margin: 0; padding: 0">
+                                        Add New
+                                    </p>
+                                </a>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body">
