@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
         <img src="{{ asset('/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">MY COMPANY</span>
+        <span class="brand-text font-weight-light">NODES DIGITAL</span>
     </a>
 
     <!-- Sidebar -->
@@ -160,7 +160,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="users" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -186,7 +186,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                 @endrole
             </ul>
         </nav>
